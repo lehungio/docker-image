@@ -1,0 +1,6 @@
+[submodule "php-apache"]
+	path = php-apache
+	url = git@github.com:lehungio/php-apache.git
+[submodule "docker-python"]
+	path = docker-python
+	url = git@github.com:lehungio/docker-python.git

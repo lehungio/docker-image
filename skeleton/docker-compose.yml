@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  skeleton:
+    image: lehungio/skeleton:7.1
+    volumes:
+        - ./:/code
+
+  skeleton_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /code
+    volumes:
+      - ".:/code"
+
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/code
+      - ./site.conf:/etc/nginx/conf.d/site.conf
