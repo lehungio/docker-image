@@ -3,7 +3,7 @@ version: '3.3'
 services:
   images:
     build:
-      context: ./images/me
+      context: ./images/me/Dockerfile
       dockerfile: Dockerfile
     working_dir: /code
     volumes:
