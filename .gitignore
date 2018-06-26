@@ -1,0 +1,6 @@
+# nodejs
+node_modules
+
+# django
+__pycache__
+
