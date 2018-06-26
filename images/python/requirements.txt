@@ -1,0 +1,5 @@
+Django>=1.8,<2.0
+psycopg2
+djangorestframework
+pygments # code highlighting
+httpie # for call api inside docker with cli http api_url

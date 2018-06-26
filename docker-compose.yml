@@ -3,11 +3,14 @@ version: '3.3'
 services:
   images:
     build:
-      context: .
-      dockerfile: /images/me/Dockerfile
+      context: ./images/python
+      dockerfile: Dockerfile
+    command: python3 ./stable/django/manage.py runserver 0.0.0.0:8083
     working_dir: /code
     volumes:
       - ".:/code"
+    ports:
+      - "8083:8083"
 
   web:
     image: nginx:latest
