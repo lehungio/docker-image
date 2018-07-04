@@ -4,3 +4,4 @@ node_modules
 # django
 __pycache__
 
+.env

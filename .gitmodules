@@ -1,0 +1,3 @@
+[submodule "stable/django/django-crm"]
+	path = stable/django/django-crm
+	url = https://github.com/MicroPyramid/Django-CRM.git
