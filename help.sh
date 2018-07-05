@@ -1,5 +1,6 @@
 #!/bin/bash
 
+readonly FULL_PATH="$( cd "$( dirname "$0" )" && pwd )"
 readonly NAME="liho"
 readonly REPO_NAME="docker-images"
 readonly REPO="https://github.com/lehungio/$NAME"
@@ -32,6 +33,12 @@ EOF
 run_usage() {
 	echo "Usage:"
 	echo "${0} [help|usage|build|init|up|down|restart|status|logs|ssh]"
+}
+
+# init env
+run_init() {
+	rsync -avz  ${FULL_PATH}/env ${FULL_PATH}/.env
+	git submodule update --init --recursive
 }
 
 # Docker compose build
