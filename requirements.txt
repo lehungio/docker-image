@@ -1,0 +1,16 @@
+# Django-CRM
+# Django==2.0
+# Django>=1.8,<2.0
+Django>=1.6,<=1.11
+django-simple-pagination==1.1.8
+pytz==2018.3
+# psycopg2-binary==2.7.4
+psycopg2-binary
+redis
+django-compressor==2.2
+coverage
+
+# liho default package
+djangorestframework
+pygments # code highlighting
+httpie # for call api inside docker with cli http api_url
