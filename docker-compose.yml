@@ -1,13 +1,18 @@
 version: '3.3'
 
 services:
+
   images:
     build:
       context: .
-      dockerfile: /images/me/Dockerfile
-    working_dir: /code
+      dockerfile: Dockerfile
+    working_dir: /code/stable/vuejs
     volumes:
       - ".:/code"
+    ports:
+      - "38080:38080"
+    env_file:
+      - .env
 
   web:
     image: nginx:latest
@@ -16,3 +21,5 @@ services:
     volumes:
       - ./:/code
       - ./site.conf:/etc/nginx/conf.d/site.conf
+    depends_on:
+      - images 
