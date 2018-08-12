@@ -59,6 +59,13 @@ run_init() {
       docker-compose up
       docker-compose ps
     ;;
+	config|conf)
+	;;
+	src|source)
+	  # smf
+    # https://github.com/SimpleMachines/SMF2.1.git
+    # git clone https://github.com/SimpleMachines/SMF2.1.git
+	;;
     help|*)
       echo "Welcome to ${NAME}"
     ;;
@@ -93,7 +100,7 @@ logs() {
 }
 
 # ssh cli
-dockerssh() {
+run_ssh() {
 	case $1 in
 		liho|*) docker-compose exec ${NAME} /bin/bash ;;
 	esac
@@ -107,6 +114,6 @@ case $1 in
 	restart|reboot) restart ;;
 	status|ps) status ;;
 	logs) logs ${2:-all} ;;
-	ssh) dockerssh ${2:-php} ;;
+	ssh) run_ssh ${2:-php} ;;
 	*) helps ;;
 esac

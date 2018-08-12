@@ -2,6 +2,5 @@
 DEFINE_SERVER=LOCALHOST
 
 # env
-PORT=38080
-HOST=0.0.0.0
-API=http://vue-api.test
+
+# smf

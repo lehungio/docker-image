@@ -6,20 +6,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    working_dir: /code/stable/vuejs
-    volumes:
-      - ".:/code"
-    ports:
-      - "38080:38080"
-    env_file:
-      - .env
-
-  web:
-    image: nginx:latest
+    working_dir: /var/www/html
     ports:
       - "80:80"
+      - "8000:8000"
     volumes:
-      - ./:/code
-      - ./site.conf:/etc/nginx/conf.d/site.conf
-    depends_on:
-      - images 
+      - ./src/SMF2.1:/var/www/html/src
+      - ./config/test/php:/var/www/html/test

@@ -1,38 +1,39 @@
-FROM ubuntu:16.04
+FROM centos:7
 
-LABEL maintainer="me@lehungio.com"
+LABEL MAINTAINER="me@lehungio.com"
 
-#  run sudo in docker ubuntu 16.04
-# https://github.com/tianon/docker-brew-ubuntu-core/issues/48#issuecomment-215522746
-RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
-WORKDIR /code/frontend
-USER root
+# Dependencies
+RUN yum update -y
+RUN yum install -y httpd yum-utils
 
-# init
-RUN apt-get update \
-    && apt-get install -y git wget curl vim iputils-ping mysql-client make g++
+# RUN yum-config-manager --enable remi-php70
+# RUN yum-config-manager --enable remi-php71
+RUN yum-config-manager --enable remi-php72
 
-# locale language pack
-RUN apt-get install -y language-pack-ja-base
+RUN yum install --enablerepo=epel -y \
+  php \
+  php-mcrypt \
+  php-cli \
+  php-gd \
+  php-curl \
+  php-mysql \
+  php-ldap \
+  php-zip \
+  php-fileinfo 
 
-# node & npm
-RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-RUN apt-get install -y git nodejs
-RUN npm install --quiet --production --no-progress --registry=${registry:-https://registry.npmjs.org} \
-    && npm cache clean --force
+RUN sed -i -e "s|^;date.timezone =.*$|date.timezone = Asia/Tokyo|" /etc/php.ini
 
-# update package
-RUN apt-get update
-RUN npm update npm -g
+# Default Docker Dev
+COPY site.conf /etc/httpd/conf.d/site.conf
+# TODO: allow exclude cp !()
+RUN shopt -s extglob
 
-# Install PM2
-RUN npm install -g pm2
+ENV HOME /root
 
-EXPOSE 8080
-EXPOSE 38080
+EXPOSE 80
+EXPOSE 8000
 
-# get started
-RUN npm install
-RUN npm --version
-CMD pm2 start --no-daemon npm -- start
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
