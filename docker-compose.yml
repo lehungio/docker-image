@@ -11,5 +11,17 @@ services:
       - "80:80"
       - "8000:8000"
     volumes:
-      - ./src/SMF2.1:/var/www/html/src
+      - ./src/SMF2.0.15:/var/www/html/src
       - ./config/test/php:/var/www/html/test
+
+  mysql:
+    image: mysql:5.7.20
+    working_dir: /code
+    volumes:
+      - "./:/code"
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    depends_on:
+      - images

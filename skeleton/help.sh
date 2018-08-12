@@ -62,9 +62,11 @@ run_init() {
 	config|conf)
 	;;
 	src|source)
-	  # smf
+	# smf
     # https://github.com/SimpleMachines/SMF2.1.git
     # git clone https://github.com/SimpleMachines/SMF2.1.git
+	# https://download.simplemachines.org/
+	# https://download.simplemachines.org/index.php/smf_2-0-15_install.tar.gz
 	;;
     help|*)
       echo "Welcome to ${NAME}"

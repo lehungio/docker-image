@@ -79,6 +79,7 @@ run_logs() {
 # ssh cli
 run_ssh() {
 	case $1 in
+		mysql) docker-compose exec mysql /bin/bash ;;
 		images|vuejs|python) docker-compose exec images /bin/bash ;;
 		*) docker-compose exec ${NAME} /bin/bash ;;
 	esac
@@ -115,6 +116,29 @@ run_cli() {
 	esac
 }
 
+# run mysql
+run_mysql() {
+	echo "Bash version ${BASH_VERSION}..."
+	for i in {1..40}
+	do
+		echo "${!i}"
+	done
+
+	case $2 in
+	  dump)
+      readonly DUMP_DB="mysqldump -ulehungio -plehungio lehungio > /code/sql/lehungio.sql"      
+      docker-compose exec mysql /bin/bash -c "$DUMP_DB"
+    ;;
+    restore)
+      readonly RESTORE_DB="mysql -ulehungio -plehungio lehungio < /code/sql/lehungio.sql"
+      docker-compose exec mysql sh -c "$RESTORE_DB"
+    ;;
+		*)
+      
+		;;
+	esac
+}
+
 case $1 in
 	init) run_init ${2:-v2};;
 	build) run_build ;;
@@ -127,6 +151,13 @@ case $1 in
 	django) run_django ${2} ;;
 	cli) 
 	  run_cli ${2:-images} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
+		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+	;;
+	mysql) 
+	  run_mysql \
+	    ${1} ${2:-help} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
 		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
 		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
 		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
