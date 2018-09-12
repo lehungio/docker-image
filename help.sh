@@ -126,15 +126,24 @@ run_mysql() {
 
 	case $2 in
 	  dump)
-      readonly DUMP_DB="mysqldump -ulehungio -plehungio lehungio > /code/sql/lehungio.sql"      
+      readonly DUMP_DB="mysqldump -ulehungio -plehungio lehungio > /code/sql/lehungio.sql"
+			echo $DUMP_DB
       docker-compose exec mysql /bin/bash -c "$DUMP_DB"
     ;;
     restore)
       readonly RESTORE_DB="mysql -ulehungio -plehungio lehungio < /code/sql/lehungio.sql"
+			echo $RESTORE_DB
       docker-compose exec mysql sh -c "$RESTORE_DB"
     ;;
-		*)
-      
+		help|*)
+			echo "💡 Usage:"
+	    echo "${1} help"
+cat <<EOF
+
+▶︎ CLI
+mysql dump
+mysql restore
+EOF
 		;;
 	esac
 }
@@ -149,18 +158,21 @@ case $1 in
 	logs) run_logs ${2:-all} ;;
 	ssh) run_ssh ${2:-php} ;;
 	django) run_django ${2} ;;
+
 	cli) 
 	  run_cli ${2:-images} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
-		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
-		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
-		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+		  ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		  ${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		  ${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
 	;;
+
 	mysql) 
 	  run_mysql \
 	    ${1} ${2:-help} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
-		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
-		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
-		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+		  ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		  ${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		  ${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
 	;;
+
 	*) run_help ;;
 esac
