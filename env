@@ -1,8 +1,6 @@
 # server
 DEFINE_SERVER=LOCALHOST
 
-# env
-
 # mysql
 MYSQL_ALLOW_EMPTY_PASSWORD=yes
 MYSQL_HOST=mysql
@@ -11,3 +9,8 @@ MYSQL_USER=lehungio
 MYSQL_PASSWORD=lehungio
 
 # smf
+SMF_VERSION=2.0.15
+SMF_DB_SERVER=mysql
+SMF_DB_NAME=lehungio
+SMF_DB_USER=lehungio
+SMF_DB_PASSWD=lehungio
