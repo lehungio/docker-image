@@ -18,11 +18,11 @@ $mtitle = 'Maintenance Mode';		# Title for the Maintenance Mode message.
 $mmessage = 'Okay faithful users...we\'re attempting to restore an older backup of the database...news will be posted once we\'re back!';		# Description of why the forum is in maintenance mode.
 
 ########## Forum Info ##########
-$mbname = 'My Community';		# The name of your forum.
+$mbname = getenv('SMF_MBNAME');		# The name of your forum.
 $language = 'english';		# The default language file set for the forum.
-$boardurl = 'http://site.test';		# URL to your forum's folder. (without the trailing /!)
-$webmaster_email = 'me@lehungio.com';		# Email address to send emails from. (like noreply@yourdomain.com.)
-$cookiename = 'SMFCookie931';		# Name of the cookie to set for authentication.
+$boardurl = getenv('SMF_BOARD_URL');		# URL to your forum's folder. (without the trailing /!)
+$webmaster_email = getenv('SMF_WEBMASTER_EMAIL');		# Email address to send emails from. (like noreply@yourdomain.com.)
+$cookiename = getenv('SMFCookie931');		# Name of the cookie to set for authentication.
 
 ########## Database Info ##########
 $db_type = 'mysql';
@@ -32,7 +32,7 @@ $db_user = getenv('SMF_DB_USER');
 $db_passwd = getenv('SMF_DB_PASSWD');
 $ssi_db_user = '';
 $ssi_db_passwd = '';
-$db_prefix = 'smf_';
+$db_prefix = getenv('SMF_DB_PREFIX');
 $db_persist = 0;
 $db_error_send = 1;
 

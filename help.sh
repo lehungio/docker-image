@@ -57,9 +57,17 @@ run_stop() {
 	docker-compose down
 }
 
-# Docker compose restart
+# run restart
+# docker compose restart
 run_restart() {
-	docker-compose restart
+	case $2 in
+	  php)
+		  docker-compose restart php
+		;;
+		*)
+			docker-compose restart
+		;;
+	esac
 }
 
 # Docker compose status
@@ -153,7 +161,13 @@ case $1 in
 	build) run_build ;;
 	start|up) run_start ;;
 	stop|down) run_stop ;;
-	restart|reboot) run_restart ;;
+	restart|reboot) 
+		run_restart \
+			${1} ${2:-help} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
+		  ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		  ${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		  ${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+	;;
 	status|ps) run_status ;;
 	logs) run_logs ${2:-all} ;;
 	ssh) run_ssh ${2:-php} ;;
@@ -166,7 +180,7 @@ case $1 in
 		  ${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
 	;;
 
-	mysql) 
+	db|mysql)
 	  run_mysql \
 	    ${1} ${2:-help} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
 		  ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
