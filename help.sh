@@ -133,6 +133,9 @@ run_mysql() {
 	done
 
 	case $2 in
+	  connect)
+		  docker-compose exec mysql sh -c "mysql -ulehungio -p"
+		;;
 	  dump)
       readonly DUMP_DB="mysqldump -ulehungio -plehungio lehungio > /code/sql/lehungio.sql"
 			echo $DUMP_DB
@@ -149,8 +152,9 @@ run_mysql() {
 cat <<EOF
 
 ▶︎ CLI
-mysql dump
-mysql restore
+${1} dump
+${1} restore
+${1} connect
 EOF
 		;;
 	esac
