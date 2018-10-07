@@ -1,10 +1,10 @@
 #!/bin/bash
 
 readonly FULL_PATH="$( cd "$( dirname "$0" )" && pwd )"
-readonly NAME="images"
+readonly NAME="lehungio"
 readonly IMAGE="mysql"
 readonly REPO_NAME="docker-images"
-readonly REPO="https://github.com/lehungio/$NAME"
+readonly REPO="https://github.com/lehungio/$REPO_NAME"
 readonly LIHO_PATH="/code"
 readonly PUBLIC_PATH="/code/public_html"
 readonly LOCALHOST="127.0.0.1"
@@ -135,7 +135,7 @@ run_mysql() {
 
 	case $2 in
 	  connect)
-		  docker-compose exec mysql sh -c "mysql -u${IMAGE} -p"
+		  docker-compose exec mysql sh -c "mysql -u${NAME} -p"
 		;;
 	  dump)
       readonly DUMP_DB="mysqldump -ulehungio -plehungio lehungio > /code/sql/lehungio.sql"
