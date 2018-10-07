@@ -1,4 +1,9 @@
 src/
 .env
 .DS_Store
+
+# smf
 stable/SMF2.0.15/cache/* 
+
+# mysql
+sql/projects/*
