@@ -1,3 +1,4 @@
 src/
 .env
 .DS_Store
+stable/SMF2.0.15/cache/*
