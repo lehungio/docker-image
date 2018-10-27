@@ -1,38 +1,39 @@
-FROM ubuntu:16.04
+FROM openjdk:8-jdk-alpine
 
 LABEL maintainer="me@lehungio.com"
 
-#  run sudo in docker ubuntu 16.04
-# https://github.com/tianon/docker-brew-ubuntu-core/issues/48#issuecomment-215522746
-RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+ENV RUN_USER daemon
+ENV RUN_GROUP daemon
 
-WORKDIR /code/frontend
-USER root
+# https://confluence.atlassian.com/display/JSERVERM/Important+directories+and+files
+ENV JIRA_HOME          /var/atlassian/application-data/jira
+ENV JIRA_INSTALL_DIR   /opt/atlassian/jira
 
-# init
-RUN apt-get update \
-    && apt-get install -y git wget curl vim iputils-ping mysql-client make g++
+VOLUME ["${JIRA_HOME}"]
 
-# locale language pack
-RUN apt-get install -y language-pack-ja-base
+# Expose HTTP port
+ARG PORT=7001
+EXPOSE ${PORT}
 
-# node & npm
-RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-RUN apt-get install -y git nodejs
-RUN npm install --quiet --production --no-progress --registry=${registry:-https://registry.npmjs.org} \
-    && npm cache clean --force
+WORKDIR $JIRA_HOME
 
-# update package
-RUN apt-get update
-RUN npm update npm -g
+CMD ["/entrypoint.sh", "-fg"]
+ENTRYPOINT ["/sbin/tini", "--"]
 
-# Install PM2
-RUN npm install -g pm2
+RUN apk add --no-cache wget curl openssh bash procps openssl perl ttf-dejavu tini util-linux libc6-compat
 
-EXPOSE 8080
-EXPOSE 38080
+COPY entrypoint.sh /entrypoint.sh
 
-# get started
-RUN npm install
-RUN npm --version
-CMD pm2 start --no-daemon npm -- start
+ARG JIRA_VERSION=7.12.3
+ARG DOWNLOAD_URL=https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-${JIRA_VERSION}.tar.gz
+
+COPY . /tmp
+
+RUN mkdir -p ${JIRA_INSTALL_DIR} \
+    && curl -L --silent ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "$JIRA_INSTALL_DIR" \
+    && chown -R ${RUN_USER}:${RUN_GROUP} ${JIRA_INSTALL_DIR}/ \
+    && sed -i -e 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""$/: \${JVM_SUPPORT_RECOMMENDED_ARGS:=""}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh \
+    && sed -i -e 's/^JVM_\(.*\)_MEMORY="\(.*\)"$/: \${JVM_\1_MEMORY:=\2}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh \
+    && sed -i -e 's/grep "java version"/grep -E "(openjdk|java) version"/g' ${JIRA_INSTALL_DIR}/bin/check-java.sh \
+    && sed -i -e 's/port="${PORT}"/port="${PORT}" secure="${catalinaConnectorSecure}" scheme="${catalinaConnectorScheme}" proxyName="${catalinaConnectorProxyName}" proxyPort="${catalinaConnectorProxyPort}"/' ${JIRA_INSTALL_DIR}/conf/server.xml \
+    && sed -i -e 's/Context path=""/Context path="${catalinaContextPath}"/' ${JIRA_INSTALL_DIR}/conf/server.xml

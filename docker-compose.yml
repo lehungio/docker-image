@@ -2,24 +2,17 @@ version: '3.3'
 
 services:
 
-  images:
+  # jira:
+  #   image: lehungio/infinity:jira
+  #   volumes:
+  #       - ./:/code
+
+  jira_test:
     build:
       context: .
       dockerfile: Dockerfile
-    working_dir: /code/stable/vuejs
+    working_dir: /code
+    ports:
+      - "7001:7001"
     volumes:
       - ".:/code"
-    ports:
-      - "38080:38080"
-    env_file:
-      - .env
-
-  web:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./:/code
-      - ./site.conf:/etc/nginx/conf.d/site.conf
-    depends_on:
-      - images 
