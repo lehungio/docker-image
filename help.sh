@@ -67,9 +67,12 @@ run_status() {
 	docker-compose ps
 }
 
-# Docker compose logs
+# run logs
 run_logs() {
 	case $1 in
+	  jira) 
+			docker-compose logs jira_test
+		;;
 		web|nginx)  docker-compose logs web;;
 		images|python)  docker-compose logs images;;
 		all|*)  docker-compose logs ;;
