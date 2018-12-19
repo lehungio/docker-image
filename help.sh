@@ -55,6 +55,9 @@ run_start() {
 # Docker compose down
 run_stop() {
 	docker-compose down
+  cat play-scala-seed/svc/RUNNING_PID
+  printf "\n"
+  rm -rfv play-scala-seed/svc/RUNNING_PID
 }
 
 # Docker compose restart
@@ -70,6 +73,9 @@ run_status() {
 # run logs
 run_logs() {
 	case $1 in
+    scala) 
+			docker-compose logs scala
+		;;
 	  jira) 
 			docker-compose logs jira_test
 		;;
@@ -82,6 +88,7 @@ run_logs() {
 # ssh cli
 run_ssh() {
 	case $1 in
+		postgres) docker-compose exec postgres /bin/bash ;;
 		images|vuejs|python) docker-compose exec images /bin/bash ;;
 		*) docker-compose exec ${NAME} /bin/bash ;;
 	esac

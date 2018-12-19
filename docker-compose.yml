@@ -11,6 +11,28 @@ services:
       - "9443:9443"
     volumes:
       - ".:/code"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:9.6.8
+    ports:
+      - "5543:5432"
+    volumes:
+      - ".:/code"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+  
+  redis:
+    image: redis:3.2.10
+    ports:
+      - "6379:6379"
+    volumes:
+      - ".:/code"
+    command: redis-server --appendonly yes
 
   web:
     image: nginx:latest
