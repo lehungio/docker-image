@@ -1,0 +1,7 @@
+# server
+DEFINE_SERVER=LOCALHOST
+
+# env
+PORT=9000
+HOST=0.0.0.0
+API=http://site-api.test
