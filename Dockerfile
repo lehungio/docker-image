@@ -1,4 +1,15 @@
 FROM openjdk:11-jre
+
+WORKDIR /play-scala-seed
+
+# dependencies
+RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
+RUN apt-get update
+RUN apt-get install sbt -y
+RUN pwd
+
 COPY ./play-scala-seed/svc /svc
 EXPOSE 9000 9443
-CMD ./play-scala-seed/svc/bin/start -Dhttp.port=9000 -Dhttps.port=9443 -Dplay.crypto.secret=secret
+# CMD ./play-scala-seed/svc/bin/start -Dhttp.port=9000 -Dhttps.port=9443 -Dplay.crypto.secret=secret
+CMD sbt run

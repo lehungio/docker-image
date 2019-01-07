@@ -1,7 +1,8 @@
 #!/bin/bash
 
 readonly FULL_PATH="$( cd "$( dirname "$0" )" && pwd )"
-readonly NAME="images"
+readonly DATABASE="postgres"
+readonly NAME="scala"
 readonly REPO_NAME="docker-images"
 readonly REPO="https://github.com/lehungio/$NAME"
 readonly LIHO_PATH="/code"
@@ -88,7 +89,7 @@ run_logs() {
 # ssh cli
 run_ssh() {
 	case $1 in
-		postgres) docker-compose exec postgres /bin/bash ;;
+		postgres|psql) docker-compose exec postgres /bin/bash ;;
 		images|vuejs|python) docker-compose exec images /bin/bash ;;
 		*) docker-compose exec ${NAME} /bin/bash ;;
 	esac
@@ -113,8 +114,42 @@ run_cli() {
 	done
 
 	case $1 in
-		images|python|php|*) 
-		  docker-compose exec images /bin/bash -c \
+		scala|*) 
+		  docker-compose exec scala /bin/bash -c \
+			  " \
+				cd play-scala-seed;${1} ${2} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
+				${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		    ${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		    ${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+				"
+		;;
+	esac
+}
+
+# run psql
+run_psql() {
+	echo "Bash version ${BASH_VERSION}..."
+	for i in {1..40}
+	do
+		echo "${!i}"
+	done
+
+	case $1 in
+		connect)
+			# readonly PSQL_CONNECT="psql -U postgres"
+			# docker-compose exec postgres /bin/bash -c "${PSQL_CONNECT}"
+			psql -U postgres -h localhost
+		;;
+	  reset)
+			readonly RESET_POSTGRES="dropdb -U postgres --if-exists ${DATABASE} && createdb -U postgres ${DATABASE}"
+			docker-compose exec postgres /bin/bash -c "${RESET_POSTGRES}"
+		;;
+		init)
+			readonly PSQL_INIT_QUOTE="psql -h localhost -U postgres postgres -f /code/sql/dbsetup.sql"
+			docker-compose exec postgres /bin/bash -c "${PSQL_INIT_QUOTE}"
+		;;
+		psql|*) 
+		  docker-compose exec postgres /bin/bash -c \
 			  " \
 				${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
 				${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
@@ -125,7 +160,15 @@ run_cli() {
 	esac
 }
 
+# psql -h localhost -U user inspiration_db -f dbsetup.sql
+
 case $1 in
+	psql|postgresql) 
+	  run_psql ${2:-postgres} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
+		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
+		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
+		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
+	;;
 	init) run_init ${2:-v2};;
 	build) run_build ;;
 	start|up) run_start ;;
@@ -136,7 +179,7 @@ case $1 in
 	ssh) run_ssh ${2:-php} ;;
 	django) run_django ${2} ;;
 	cli) 
-	  run_cli ${2:-images} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
+	  run_cli ${2:-scala} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} \
 		${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} \
 		${21} ${22} ${23} ${24} ${25} ${26} ${27} ${28} ${29} ${30} \
 		${31} ${32} ${33} ${34} ${35} ${36} ${37} ${38} ${39} ${40}
