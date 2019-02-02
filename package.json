@@ -1,0 +1,28 @@
+{
+  "name": "docker-images",
+  "version": "1.0.0",
+  "description": "docker-images",
+  "main": "index.js",
+  "dependencies": {
+    "npm": "^6.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lehungio/docker-images.git"
+  },
+  "keywords": [
+    "lehungio",
+    "docker",
+    "images"
+  ],
+  "author": "me@lehungio.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lehungio/docker-images/issues"
+  },
+  "homepage": "https://github.com/lehungio/docker-images#readme"
+}
